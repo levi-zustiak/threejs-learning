@@ -30,16 +30,14 @@ function Column(props) {
   };
 
   return (
-    <group>
-      <mesh onClick={handleClick} position={[x, 0, 0]}>
-        <planeBufferGeometry args={[width, viewport.height]} />
-        <meshBasicMaterial attach="material" transparent opacity={0} />
-        {column.map(
-          (token, index) =>
-            token && <Token key={index} index={index} token={token} />
-        )}
-      </mesh>
-    </group>
+    <mesh onClick={handleClick} position={[x, 0, -1]}>
+      <planeBufferGeometry args={[width, viewport.height]} />
+      <meshBasicMaterial attach="material" transparent opacity={0} />
+      {column.map(
+        (token, index) =>
+          token && <Token key={index} index={index} token={token} />
+      )}
+    </mesh>
   );
 }
 

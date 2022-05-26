@@ -1,8 +1,8 @@
 import "./styles.css";
 import { useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import Game from "./Game";
 import { RecoilRoot } from "recoil";
+import Board from "./Board";
 
 export default function App() {
   const canvas = useRef();
@@ -20,7 +20,7 @@ export default function App() {
       <Canvas ref={canvas} camera={camera} flat={true} orthographic>
         <RecoilRoot>
           <Suspense fallback={null}>
-            <Game />
+            <Board />
           </Suspense>
         </RecoilRoot>
       </Canvas>

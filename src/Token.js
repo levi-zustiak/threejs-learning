@@ -28,9 +28,9 @@ function Token(props) {
     from: { position: [0, starting, 0] },
     enter: { position: [0, final, 0] },
     config: {
-      mass: 1.5,
       friction: 10,
-      bounce: 0.1
+      tension: 160,
+      bounce: 0.15
     },
     key: token.key
   });
