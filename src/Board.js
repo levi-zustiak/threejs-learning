@@ -13,12 +13,7 @@ function Board() {
   return (
     <mesh ref={ref} position={[0, 0, 2]}>
       <planeBufferGeometry args={[viewport.width, viewport.height]} />
-      <meshBasicMaterial
-        attach="material"
-        map={texture}
-        transparent
-        toneMapped={false}
-      />
+      <meshBasicMaterial attach="material" map={texture} transparent />
     </mesh>
   );
 }

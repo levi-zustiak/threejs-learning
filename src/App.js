@@ -1,5 +1,5 @@
 import "./styles.css";
-import { useEffect, useRef, Suspense } from "react";
+import { useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import Game from "./Game";
 import { RecoilRoot } from "recoil";
@@ -8,14 +8,8 @@ export default function App() {
   const canvas = useRef();
   const fov = 64;
 
-  useEffect(() => {
-    if (canvas.current) {
-      // console.log(canvas.current);
-    }
-  }, [canvas]);
-
   const camera = {
-    position: [0, 0, 64],
+    position: [0, 0, 32],
     zoom: fov,
     near: 0,
     far: fov
@@ -23,7 +17,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <Canvas ref={canvas} orthographic camera={camera}>
+      <Canvas ref={canvas} camera={camera} flat={true} orthographic>
         <RecoilRoot>
           <Suspense fallback={null}>
             <Game />

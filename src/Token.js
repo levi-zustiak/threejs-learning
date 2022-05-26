@@ -42,7 +42,7 @@ function Token(props) {
         attach="material"
         map={texture}
         transparent
-        toneMapped={false}
+        // toneMapped={false}
       />
     </animated.mesh>
   ));
