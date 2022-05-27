@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useThree, useLoader } from "@react-three/fiber";
 import { useTransition, animated } from "@react-spring/three";
 import { TextureLoader } from "three";
 import RedToken from "./Sprites/Red_token.png";
 import YellowToken from "./Sprites/Yellow_token.png";
+import GameObject from "./GameObject";
 
 function Token(props) {
   const { index, token } = props;
@@ -29,22 +30,32 @@ function Token(props) {
     enter: { position: [0, final, 0] },
     config: {
       friction: 10,
-      tension: 160,
-      bounce: 0.15
+      tension: 100,
+      bounce: 0.5
     },
     key: token.key
   });
 
-  return transition((props) => (
-    <animated.mesh ref={ref} {...props}>
-      <planeBufferGeometry args={args} />
-      <meshBasicMaterial
-        attach="material"
-        map={texture}
-        transparent
-        // toneMapped={false}
-      />
-    </animated.mesh>
+  useEffect(() => {
+    console.log("rendered", index);
+  }, [index]);
+
+  const geometryProps = {
+    args: [tokenSize, tokenSize]
+  };
+
+  const materialProps = {
+    map: texture,
+    transparent: true
+  };
+
+  return transition(({ position }) => (
+    <GameObject
+      position={position}
+      geometry={geometryProps}
+      material={materialProps}
+      animate
+    />
   ));
 }
 
