@@ -18,6 +18,7 @@ function Column(props) {
   const x = width * (index - 3);
 
   const handleClick = () => {
+    console.log("clicked");
     const row = board[index].indexOf(null);
     const newBoard = copyBoard();
 

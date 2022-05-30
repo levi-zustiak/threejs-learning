@@ -3,6 +3,8 @@ import { useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { RecoilRoot } from "recoil";
 import Board from "./Board";
+import Loading from "./Loading";
+import AssetLoader from "./AssetLoader";
 
 export default function App() {
   const canvas = useRef();
@@ -19,8 +21,10 @@ export default function App() {
     <div className="App">
       <Canvas ref={canvas} camera={camera} flat={true} orthographic>
         <RecoilRoot>
-          <Suspense fallback={null}>
-            <Board />
+          <Suspense fallback={<Loading />}>
+            <AssetLoader>
+              <Board />
+            </AssetLoader>
           </Suspense>
         </RecoilRoot>
       </Canvas>

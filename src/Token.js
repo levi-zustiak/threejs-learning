@@ -1,44 +1,34 @@
-import { useRef, useEffect } from "react";
-import { useThree, useLoader } from "@react-three/fiber";
-import { useTransition, animated } from "@react-spring/three";
-import { TextureLoader } from "three";
-import RedToken from "./Sprites/Red_token.png";
-import YellowToken from "./Sprites/Yellow_token.png";
+import { useThree } from "@react-three/fiber";
+import { useTransition } from "@react-spring/three";
 import GameObject from "./GameObject";
+import useAsset from "./hooks/useAsset";
 
 function Token(props) {
   const { index, token } = props;
-  const ref = useRef();
-
   const { viewport } = useThree();
+  const { redTokenSprite, yellowTokenSprite } = useAsset();
+
+  const texture = token.value ? redTokenSprite : yellowTokenSprite;
 
   const heightFactor = 6.428571428571429;
   const tokenFactor = 10.909090909090908;
   const tokenSize = viewport.width / tokenFactor;
-  const args = [tokenSize, tokenSize];
 
   const height = viewport.height / heightFactor;
   const final = height * (index - 2.5);
   const starting = viewport.height / 2;
 
-  const TokenSprite = token.value ? RedToken : YellowToken;
-
-  const texture = useLoader(TextureLoader, TokenSprite);
-
   const transition = useTransition(token, {
     from: { position: [0, starting, 0] },
     enter: { position: [0, final, 0] },
     config: {
+      mass: 1.6,
       friction: 10,
-      tension: 100,
-      bounce: 0.5
+      tension: 150,
+      bounce: 0.1
     },
-    key: token.key
+    key: token?.key
   });
-
-  useEffect(() => {
-    console.log("rendered", index);
-  }, [index]);
 
   const geometryProps = {
     args: [tokenSize, tokenSize]
@@ -49,14 +39,17 @@ function Token(props) {
     transparent: true
   };
 
-  return transition(({ position }) => (
-    <GameObject
-      position={position}
-      geometry={geometryProps}
-      material={materialProps}
-      animate
-    />
-  ));
+  return transition(
+    ({ position }) =>
+      token && (
+        <GameObject
+          position={position}
+          geometry={geometryProps}
+          material={materialProps}
+          animate
+        />
+      )
+  );
 }
 
 export default Token;

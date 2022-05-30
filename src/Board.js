@@ -1,10 +1,8 @@
-import { useEffect, useRef } from "react";
-import { TextureLoader } from "three";
-import { useLoader, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import GameObject from "./GameObject";
 
 import Column from "./Column";
-import BoardSprite from "./Sprites/Board.png";
+import useAsset from "./hooks/useAsset";
 
 import { useRecoilValue } from "recoil";
 import boardAtom from "./state/boardAtom";
@@ -12,8 +10,7 @@ import boardAtom from "./state/boardAtom";
 function Board() {
   const { viewport } = useThree();
   const board = useRecoilValue(boardAtom);
-
-  const texture = useLoader(TextureLoader, BoardSprite);
+  const { boardSprite } = useAsset();
 
   const position = [0, 0, 2];
 
@@ -22,7 +19,7 @@ function Board() {
   };
 
   const materialProps = {
-    map: texture,
+    map: boardSprite,
     transparent: true
   };
 
