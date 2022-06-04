@@ -1,9 +1,9 @@
 import { TextureLoader } from "three";
-import { useLoader } from "@react-three/fiber";
+import { useLoader, useThree } from "@react-three/fiber";
 
-import BoardSprite from "./Sprites/Board.png";
-import RedTokenSprite from "./Sprites/Red_token.png";
-import YellowTokenSprite from "./Sprites/Yellow_token.png";
+import BoardSprite from "./assets/Board.png";
+import RedTokenSprite from "./assets/Red_token.png";
+import YellowTokenSprite from "./assets/Yellow_token.png";
 import { createContext } from "react";
 
 export const AssetLoaderContext = createContext({});
@@ -19,19 +19,45 @@ function AssetLoaderProvider({ children }) {
 }
 
 function AssetLoader({ children }) {
-  const [Board, RedToken, YellowToken] = useLoader(TextureLoader, [
+  const { viewport } = useThree();
+  const heightFactor = 6.428571428571429; // boardHeight: 720 / cellHeight: 112
+  const tokenFactor = 10.909090909090908; // boardWidth: 960 / tokenWidth: 88
+
+  const tokenSize = viewport.width / tokenFactor;
+
+  const xOffset = viewport.width / 7.5;
+  const yOffset = viewport.height / heightFactor;
+
+  const [
+    boardTexture,
+    redTokenTexture,
+    yellowTokenTexture
+  ] = useLoader(TextureLoader, [
     BoardSprite,
     RedTokenSprite,
     YellowTokenSprite
   ]);
 
-  const textures = {
-    boardSprite: Board,
-    redTokenSprite: RedToken,
-    yellowTokenSprite: YellowToken
+  const current = {
+    boardAsset: {
+      position: [0, 0, 2],
+      texture: boardTexture,
+      args: [viewport.width, viewport.height]
+    },
+    columnAsset: {
+      args: [viewport.width / 7.5, viewport.height]
+    },
+    tokenAsset: {
+      redTexture: redTokenTexture,
+      yellowTexture: yellowTokenTexture,
+      args: [tokenSize, tokenSize],
+      xOffset: xOffset,
+      yOffset: yOffset,
+      starting: viewport.height / 2
+    }
   };
 
-  assets.current = textures;
+  assets.current = current;
 
   return <AssetLoaderProvider>{children}</AssetLoaderProvider>;
 }

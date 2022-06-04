@@ -1,25 +1,19 @@
-import { useThree } from "@react-three/fiber";
 import { useTransition } from "@react-spring/three";
 import GameObject from "./GameObject";
 import useAsset from "./hooks/useAsset";
 
 function Token(props) {
   const { index, token } = props;
-  const { viewport } = useThree();
-  const { redTokenSprite, yellowTokenSprite } = useAsset();
+  const { tokenAsset } = useAsset();
 
-  const texture = token.value ? redTokenSprite : yellowTokenSprite;
+  const texture = token.value
+    ? tokenAsset.redTexture
+    : tokenAsset.yellowTexture;
 
-  const heightFactor = 6.428571428571429;
-  const tokenFactor = 10.909090909090908;
-  const tokenSize = viewport.width / tokenFactor;
-
-  const height = viewport.height / heightFactor;
-  const final = height * (index - 2.5);
-  const starting = viewport.height / 2;
+  const final = tokenAsset.yOffset * (index - 2.5);
 
   const transition = useTransition(token, {
-    from: { position: [0, starting, 0] },
+    from: { position: [0, tokenAsset.starting, 0] },
     enter: { position: [0, final, 0] },
     config: {
       mass: 1.6,
@@ -31,7 +25,7 @@ function Token(props) {
   });
 
   const geometryProps = {
-    args: [tokenSize, tokenSize]
+    args: tokenAsset.args
   };
 
   const materialProps = {
@@ -39,17 +33,14 @@ function Token(props) {
     transparent: true
   };
 
-  return transition(
-    ({ position }) =>
-      token && (
-        <GameObject
-          position={position}
-          geometry={geometryProps}
-          material={materialProps}
-          animate
-        />
-      )
-  );
+  return transition(({ position }) => (
+    <GameObject
+      position={position}
+      geometry={geometryProps}
+      material={materialProps}
+      animate
+    />
+  ));
 }
 
 export default Token;

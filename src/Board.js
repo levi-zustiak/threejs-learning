@@ -1,4 +1,3 @@
-import { useThree } from "@react-three/fiber";
 import GameObject from "./GameObject";
 
 import Column from "./Column";
@@ -6,32 +5,31 @@ import useAsset from "./hooks/useAsset";
 
 import { useRecoilValue } from "recoil";
 import boardAtom from "./state/boardAtom";
+import Placeholder from "./Placeholder";
 
 function Board() {
-  const { viewport } = useThree();
   const board = useRecoilValue(boardAtom);
-  const { boardSprite } = useAsset();
-
-  const position = [0, 0, 2];
+  const { boardAsset } = useAsset();
 
   const geometryProps = {
-    args: [viewport.width, viewport.height]
+    args: boardAsset.args
   };
 
   const materialProps = {
-    map: boardSprite,
+    map: boardAsset.texture,
     transparent: true
   };
 
   return (
     <GameObject
-      position={position}
+      position={boardAsset.position}
       geometry={geometryProps}
       material={materialProps}
     >
       {board.map((column, i) => (
         <Column key={i} index={i} column={column} />
       ))}
+      <Placeholder />
     </GameObject>
   );
 }
