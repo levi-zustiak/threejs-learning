@@ -1,10 +1,12 @@
+import { useCallback, useRef } from "react";
 import { useSpring } from "@react-spring/three";
-import GameObject from "./GameObject";
-import useAsset from "./hooks/useAsset";
+
 import { useRecoilValue } from "recoil";
+import useAsset from "./hooks/useAsset";
 import turnAtom from "./state/turnAtom";
 import coordAtom from "./state/coordAtom";
-import { useEffect, useRef } from "react";
+
+import GameObject from "./GameObject";
 
 function Placeholder() {
   const { tokenAsset } = useAsset();
@@ -19,17 +21,17 @@ function Placeholder() {
 
   const { opacity } = useSpring({
     loop: { reverse: true },
+    to: useCallback(async (next) => {
+      await next({ opacity: 0.75 });
+      await next({ opacity: 0 });
+    }, []),
     from: { opacity: 0 },
-    to: { opacity: 0.75 },
     config: {
       tension: 200,
       friction: 26,
       precision: 0.01
-    },
-    trail: 500
+    }
   });
-
-  console.log(opacity);
 
   const position = [x, y, -1];
 

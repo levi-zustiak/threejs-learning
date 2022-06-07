@@ -13,8 +13,6 @@ export default memo(
       children
     } = props;
 
-    console.log("object", opacity);
-
     return animate ? (
       <a.mesh ref={ref} position={position} {...mesh}>
         <planeBufferGeometry {...geometry} />
