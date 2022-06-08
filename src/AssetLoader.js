@@ -25,7 +25,7 @@ function AssetLoader({ children }) {
 
   const tokenSize = viewport.width / tokenFactor;
 
-  const xOffset = viewport.width / 7.5;
+  const xOffset = viewport.width / 7.5; // column position
   const yOffset = viewport.height / heightFactor;
 
   const [

@@ -24,12 +24,49 @@ function Column(props) {
     return board.map((column) => [...column]);
   };
 
-  const getNextRow = () => {
-    return board[index].indexOf(null);
+  const getNextRow = (col) => {
+    return board[col].indexOf(null);
+  };
+
+  const getPlaceholderCoords = (row) => {
+    if (row === -1) {
+      let i = 2,
+        j = 4;
+
+      while (true) {
+        if (getNextRow(i) !== -1) {
+          console.log(i);
+          setCoords({
+            col: i,
+            row: getNextRow(i)
+          });
+          break;
+        } else if (getNextRow(j) !== -1) {
+          setCoords({
+            col: j,
+            row: getNextRow(j)
+          });
+          break;
+        } else if (i <= -1) {
+          break;
+        } else {
+          i--;
+          j++;
+        }
+      }
+      //for i = index - 1 j = index + 1;
+      //if i === length + 1 or -1 break or getRow
+      //else getNextRow(value)
+    } else {
+      setCoords({
+        col: index,
+        row: row + 1
+      });
+    }
   };
 
   const handleClick = () => {
-    const row = getNextRow();
+    const row = getNextRow(index);
     const newBoard = copyBoard();
 
     newBoard[index][row] = { key: v4(), value: value };
@@ -37,16 +74,13 @@ function Column(props) {
 
     setBoard(newBoard);
 
-    setCoords({
-      col: index,
-      row: row + 1
-    });
+    getPlaceholderCoords(row);
   };
 
   const handleHover = () => {
     setCoords({
       col: index,
-      row: getNextRow()
+      row: getNextRow(index)
     });
   };
 

@@ -27,13 +27,13 @@ function Placeholder() {
     }, []),
     from: { opacity: 0 },
     config: {
-      tension: 200,
-      friction: 26,
+      tension: 180,
+      friction: 28,
       precision: 0.01
     }
   });
 
-  const position = [x, y, -1];
+  const position = [x, y, 0];
 
   const geometryProps = {
     args: tokenAsset.args

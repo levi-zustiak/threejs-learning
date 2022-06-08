@@ -13,6 +13,8 @@ export default memo(
       children
     } = props;
 
+    //switch case for layers and provide zOffset
+
     return animate ? (
       <a.mesh ref={ref} position={position} {...mesh}>
         <planeBufferGeometry {...geometry} />
