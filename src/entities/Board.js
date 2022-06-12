@@ -1,13 +1,13 @@
 import { useRef } from "react";
+import { useRecoilValue } from "recoil";
 
-import GameObject from "./GameObject";
+import useAsset from "../hooks/useAsset";
 
 import Column from "./Column";
-import useAsset from "./hooks/useAsset";
-
-import { useRecoilValue } from "recoil";
-import gameAtom from "./state/gameAtom";
 import Placeholder from "./Placeholder";
+import GameObject from "../components/GameObject";
+
+import gameAtom from "../state/gameAtom";
 
 function Board() {
   const { board } = useRecoilValue(gameAtom);

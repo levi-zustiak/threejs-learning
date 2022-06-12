@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef } from "react";
 import { useSpring } from "@react-spring/three";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import useAsset from "./hooks/useAsset";
-import useHelpers from "./hooks/useHelpers";
-import gameAtom from "./state/gameAtom";
-import placeholderAtom from "./state/placeholderAtom";
+import useAsset from "../hooks/useAsset";
+import useHelpers from "../hooks/useHelpers";
+import gameAtom from "../state/gameAtom";
+import placeholderAtom from "../state/placeholderAtom";
 
-import GameObject from "./GameObject";
+import GameObject from "../components/GameObject";
 
 function Placeholder() {
   const { tokenAsset } = useAsset();

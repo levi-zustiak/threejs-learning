@@ -2,12 +2,12 @@ import { useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { v4 } from "uuid";
 
-import gameAtom from "./state/gameAtom";
-import placeholderAtom from "./state/placeholderAtom";
-import useAsset from "./hooks/useAsset";
-import useHelpers from "./hooks/useHelpers";
+import gameAtom from "../state/gameAtom";
+import placeholderAtom from "../state/placeholderAtom";
+import useAsset from "../hooks/useAsset";
+import useHelpers from "../hooks/useHelpers";
 
-import GameObject from "./GameObject";
+import GameObject from "../components/GameObject";
 import Token from "./Token";
 
 function Column(props) {

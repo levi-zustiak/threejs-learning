@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useTransition } from "@react-spring/three";
-import GameObject from "./GameObject";
-import useAsset from "./hooks/useAsset";
+import GameObject from "../components/GameObject";
+import useAsset from "../hooks/useAsset";
 
 function Token(props) {
   const { index, token } = props;

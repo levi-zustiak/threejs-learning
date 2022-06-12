@@ -1,10 +1,10 @@
+import { createContext } from "react";
 import { TextureLoader } from "three";
 import { useLoader, useThree } from "@react-three/fiber";
 
-import BoardSprite from "./assets/Board.png";
-import RedTokenSprite from "./assets/Red_token.png";
-import YellowTokenSprite from "./assets/Yellow_token.png";
-import { createContext } from "react";
+import BoardSprite from "../assets/Board.png";
+import RedTokenSprite from "../assets/Red_token.png";
+import YellowTokenSprite from "../assets/Yellow_token.png";
 
 export const AssetLoaderContext = createContext({});
 
@@ -20,12 +20,13 @@ function AssetLoaderProvider({ children }) {
 
 function AssetLoader({ children }) {
   const { viewport } = useThree();
+
   const heightFactor = 6.428571428571429; // boardHeight: 720 / cellHeight: 112
   const tokenFactor = 10.909090909090908; // boardWidth: 960 / tokenWidth: 88
 
   const tokenSize = viewport.width / tokenFactor;
 
-  const xOffset = viewport.width / 7.5; // column position
+  const xOffset = viewport.width / 7.5; // column width
   const yOffset = viewport.height / heightFactor;
 
   const [
