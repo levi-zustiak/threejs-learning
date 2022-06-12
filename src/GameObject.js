@@ -1,4 +1,4 @@
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, useMemo } from "react";
 import { a } from "@react-spring/three";
 
 export default memo(
@@ -6,28 +6,31 @@ export default memo(
     const {
       animate,
       position,
-      opacity,
-      mesh,
       geometry,
-      material,
+      opacity = 1,
+      texture,
+      eventHandlers,
       children
     } = props;
 
-    //switch case for layers and provide zOffset
+    const materialProps = useMemo(
+      () => ({
+        opacity,
+        map: texture,
+        transparent: true
+      }),
+      [opacity, texture]
+    );
 
     return animate ? (
-      <a.mesh ref={ref} position={position} {...mesh}>
-        <planeBufferGeometry {...geometry} />
-        <a.meshBasicMaterial
-          attach="material"
-          {...material}
-          opacity={opacity}
-        />
+      <a.mesh ref={ref} position={position} {...eventHandlers}>
+        <planeBufferGeometry args={geometry} />
+        <a.meshBasicMaterial attach="material" {...materialProps} />
       </a.mesh>
     ) : (
-      <mesh ref={ref} position={position} {...mesh}>
-        <planeBufferGeometry {...geometry} />
-        <meshBasicMaterial attach="material" {...material} />
+      <mesh ref={ref} position={position} {...eventHandlers}>
+        <planeBufferGeometry args={geometry} />
+        <meshBasicMaterial attach="material" {...materialProps} />
         {children}
       </mesh>
     );

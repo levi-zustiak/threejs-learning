@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useTransition } from "@react-spring/three";
 import GameObject from "./GameObject";
 import useAsset from "./hooks/useAsset";
@@ -5,6 +6,7 @@ import useAsset from "./hooks/useAsset";
 function Token(props) {
   const { index, token } = props;
   const { tokenAsset } = useAsset();
+  const ref = useRef();
 
   const texture = token.value
     ? tokenAsset.redTexture
@@ -24,20 +26,12 @@ function Token(props) {
     key: token?.key
   });
 
-  const geometryProps = {
-    args: tokenAsset.args
-  };
-
-  const materialProps = {
-    map: texture,
-    transparent: true
-  };
-
   return transition(({ position }) => (
     <GameObject
+      ref={ref}
       position={position}
-      geometry={geometryProps}
-      material={materialProps}
+      geometry={tokenAsset.args}
+      texture={texture}
       animate
     />
   ));

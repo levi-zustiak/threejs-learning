@@ -1,23 +1,25 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useSpring } from "@react-spring/three";
 
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import useAsset from "./hooks/useAsset";
-import turnAtom from "./state/turnAtom";
-import coordAtom from "./state/coordAtom";
+import useHelpers from "./hooks/useHelpers";
+import gameAtom from "./state/gameAtom";
+import placeholderAtom from "./state/placeholderAtom";
 
 import GameObject from "./GameObject";
 
 function Placeholder() {
   const { tokenAsset } = useAsset();
-  const turn = useRecoilValue(turnAtom);
-  const coords = useRecoilValue(coordAtom);
+  const { getNextRow, isAvailable } = useHelpers();
+  const { board, turn } = useRecoilValue(gameAtom);
+  const [{ col, row }, setPlaceholder] = useRecoilState(placeholderAtom);
   const ref = useRef();
 
   const texture = turn ? tokenAsset.redTexture : tokenAsset.yellowTexture;
 
-  const x = tokenAsset.xOffset * (coords.col - 3);
-  const y = tokenAsset.yOffset * (coords.row - 2.5);
+  const x = tokenAsset.xOffset * (col - 3);
+  const y = tokenAsset.yOffset * (row - 2.5);
 
   const { opacity } = useSpring({
     loop: { reverse: true },
@@ -33,23 +35,50 @@ function Placeholder() {
     }
   });
 
-  const position = [x, y, 0];
+  const position = [x, y, -1];
 
-  const geometryProps = {
-    args: tokenAsset.args
+  const getNextPosition = () => {
+    if (isAvailable(col)) {
+      setPlaceholder({
+        col: col,
+        row: getNextRow(col)
+      });
+    } else if (isAvailable(3)) {
+      setPlaceholder({
+        col: 3,
+        row: getNextRow(3)
+      });
+    } else {
+      let i, j;
+
+      for (i = 4, j = 2; i < 7; i++, j--) {
+        if (isAvailable(j)) {
+          setPlaceholder({
+            col: j,
+            row: getNextRow(j)
+          });
+          break;
+        } else if (isAvailable(i)) {
+          setPlaceholder({
+            col: i,
+            row: getNextRow(i)
+          });
+          break;
+        }
+      }
+    }
   };
 
-  const materialProps = {
-    map: texture,
-    transparent: true
-  };
+  useEffect(() => {
+    getNextPosition();
+  }, [board]);
 
   return (
     <GameObject
       ref={ref}
       position={position}
-      geometry={geometryProps}
-      material={materialProps}
+      geometry={tokenAsset.args}
+      texture={texture}
       opacity={opacity}
       animate
     />

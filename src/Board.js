@@ -1,30 +1,25 @@
+import { useRef } from "react";
+
 import GameObject from "./GameObject";
 
 import Column from "./Column";
 import useAsset from "./hooks/useAsset";
 
 import { useRecoilValue } from "recoil";
-import boardAtom from "./state/boardAtom";
+import gameAtom from "./state/gameAtom";
 import Placeholder from "./Placeholder";
 
 function Board() {
-  const board = useRecoilValue(boardAtom);
+  const { board } = useRecoilValue(gameAtom);
   const { boardAsset } = useAsset();
-
-  const geometryProps = {
-    args: boardAsset.args
-  };
-
-  const materialProps = {
-    map: boardAsset.texture,
-    transparent: true
-  };
+  const ref = useRef();
 
   return (
     <GameObject
+      ref={ref}
       position={boardAsset.position}
-      geometry={geometryProps}
-      material={materialProps}
+      geometry={boardAsset.args}
+      texture={boardAsset.texture}
     >
       {board.map((column, i) => (
         <Column key={i} index={i} column={column} />
